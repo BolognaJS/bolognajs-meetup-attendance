@@ -1,0 +1,5 @@
+{
+    "env": {
+        "MEETUP_API_KEY": "@meetup-api-key"
+    }
+}

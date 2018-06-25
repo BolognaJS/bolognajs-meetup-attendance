@@ -1,0 +1,27 @@
+{
+  "name": "bolognajs-meetup-attendance",
+  "version": "1.0.0",
+  "description": "bolognajs-meetup-attendance",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/innocentiv/bolognajs-meetup-attendance.git"
+  },
+  "keywords": [
+    "meetup"
+  ],
+  "author": "Valerio Innocenti Sedili (info@vinnocenti.com)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/innocentiv/bolognajs-meetup-attendance/issues"
+  },
+  "homepage": "https://github.com/innocentiv/bolognajs-meetup-attendance#readme",
+  "dependencies": {
+    "express": "^4.16.3",
+    "node-fetch": "^2.1.2"
+  }
+}
