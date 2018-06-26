@@ -1,5 +1,7 @@
 {
     "env": {
-        "MEETUP_API_KEY": "@meetup-api-key"
+        "MEETUP_API_KEY": "@meetup-api-key",
+        "MONGO_USER": "@mongo-user",
+        "MONGO_PASSWORD": "@mongo-password"
     }
 }

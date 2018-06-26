@@ -1,7 +1,7 @@
 const Attendee = require('../controllers/attendee')
 
-module.exports = function (app) {
-  const attendee = new Attendee()
+module.exports = function (app, db) {
+  const attendee = new Attendee(db)
 
-  app.get('/attendee/:id', attendee.list)
+  app.get('/attendee/:id', attendee.list.bind(attendee))
 }

@@ -1,10 +1,21 @@
 const express = require('express')
+const mongo = require('mongodb')
+const assert = require('assert')
+
+const { databaseUri, databaseName } = require('./app/config/database')
+
 const routes = require('./app/routes')
 
 const app = express()
 
-routes(app)
+mongo.connect(databaseUri, function (err, client) {
+  assert.equal(null, err)
+  console.log('Connected successfully to server')
+  const db = client.db(databaseName)
 
-app.listen(3000, function () {
-  console.log('BolognaJS Api Ready')
+  routes(app, db)
+
+  app.listen(3000, function () {
+    console.log('BolognaJS Api Ready')
+  })
 })
