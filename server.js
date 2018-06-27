@@ -1,4 +1,5 @@
 const express = require('express')
+const bodyParser = require('body-parser')
 const cors = require('cors')
 const mongo = require('mongodb')
 const assert = require('assert')
@@ -9,6 +10,7 @@ const routes = require('./app/routes')
 
 const app = express()
 
+app.use(bodyParser.json())
 app.use(cors())
 
 mongo.connect(databaseUri, function (err, client) {

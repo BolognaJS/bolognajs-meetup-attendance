@@ -1,37 +1,59 @@
 const fetch = require('node-fetch')
-const assert = require('assert')
 const { meetupKey, meetupUser } = require('../config/meetup')
 
 class Attendee {
   constructor (db) {
-    this.checkin = db.collection('checkin')
+    this.checkinCollection = db.collection('checkin')
   }
 
-  list (req, res) {
-    const meetupId = parseInt(req.params.id)
-
-    fetch(`https://api.meetup.com/${meetupUser}/events/${meetupId}/attendance/?key=${meetupKey}&sign=true`)
+  _getMeetupAttendee (meetupId, meetupUser, meetupKey) {
+    return fetch(`https://api.meetup.com/${meetupUser}/events/${meetupId}/attendance/?key=${meetupKey}&sign=true`)
       .then(res => res.json())
-      .then(json => {
-        if (json.errors) { return res.status(404).send(JSON.stringify(json)) }
+  }
 
-        this.checkin.find({ eventId: meetupId }).toArray((err, docs) => {
-          assert.equal(err, null)
+  async _getAttendeeList (meetupId, meetupUser, meetupKey) {
+    const attendeeList = await this._getMeetupAttendee(meetupId, meetupUser, meetupKey)
 
-          const userList = json.filter(function (user) {
-            return user.rsvp.response === 'yes'
-          }).map(function (user) {
-            return {
-              id: user.member.id,
-              name: user.member.name,
-              photo: user.member.photo && user.member.photo.highres_link,
-              checkin: docs.some(checkin => checkin.userId === user.member.id)
-            }
-          })
-          res.setHeader('Content-Type', 'application/json')
-          res.send(JSON.stringify(userList))
-        })
+    if (attendeeList.errors) throw JSON.stringify(attendeeList)
+
+    const checkinList = await this.checkinCollection.find({ eventId: meetupId }).toArray()
+
+    return attendeeList
+      .filter(user => user.rsvp.response === 'yes')
+      .map(user => {
+        const checkinUser = checkinList.find(checkin => checkin.userId === user.member.id)
+        return {
+          id: user.member.id,
+          name: user.member.name,
+          photo: user.member.photo && user.member.photo.highres_link,
+          checkin: checkinUser ? checkinUser.checkin : null
+        }
       })
+  }
+
+  async listAttendee (req, res) {
+    res.setHeader('Content-Type', 'application/json')
+    try {
+      const meetupId = parseInt(req.params.id)
+      const attendeeList = await this._getAttendeeList(meetupId, meetupUser, meetupKey)
+
+      res.json(attendeeList)
+    } catch (error) {
+      res.status(400).send(error)
+    }
+  };
+
+  async listCheckedin (req, res) {
+    res.setHeader('Content-Type', 'application/json')
+    try {
+      const meetupId = parseInt(req.params.id)
+      const attendeeList = await this._getAttendeeList(meetupId, meetupUser, meetupKey)
+      const checkedinList = attendeeList.filter(user => user.checkin)
+
+      res.json(checkedinList)
+    } catch (error) {
+      res.status(400).send(error)
+    }
   };
 }
 
