@@ -2,6 +2,10 @@ const fetch = require('node-fetch')
 const { meetupKey, meetupUser } = require('../config/meetup')
 
 class Events {
+  constructor (db) {
+    this.checkinCollection = db.collection('checkin')
+  }
+
   _getMeetupEvents (meetupUser, meetupKey) {
     return fetch(`https://api.meetup.com/${meetupUser}/events/?status=past,upcoming&desc=true&key=${meetupKey}&sign=true`)
       .then(res => res.json())
@@ -12,13 +16,15 @@ class Events {
 
     if (eventList.errors) throw JSON.stringify(eventList)
 
-    return eventList
-      .map(event => ({
+    return Promise.all(eventList
+      .map(async event => ({
         id: parseInt(event.id),
         name: event.name,
         date: event.local_date,
-        time: event.local_time
-      }))
+        time: event.local_time,
+        attendee: event.yes_rsvp_count,
+        checkedin: await this.checkinCollection.count({eventId: parseInt(event.id)})
+      })))
   }
 
   async listEvents (req, res) {

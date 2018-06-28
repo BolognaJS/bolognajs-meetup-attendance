@@ -7,7 +7,7 @@ const Events = require('../controllers/events')
 module.exports = function (app, db) {
   const attendee = new Attendee(db)
   const checkin = new Checkin(db)
-  const events = new Events()
+  const events = new Events(db)
 
   app.get('/attendee/:id', attendee.listAttendee.bind(attendee))
   app.get('/checkedin/:id', attendee.listCheckedin.bind(attendee))
