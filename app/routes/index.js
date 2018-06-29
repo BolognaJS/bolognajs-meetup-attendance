@@ -19,4 +19,5 @@ module.exports = function (app, db) {
   }), checkin.updateCheckin.bind(checkin))
 
   app.get('/events', events.listEvents.bind(events))
+  app.get('/events/:id', events.getEvent.bind(events))
 }

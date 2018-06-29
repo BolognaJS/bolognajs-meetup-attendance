@@ -23,8 +23,31 @@ class Events {
         date: event.local_date,
         time: event.local_time,
         attendee: event.yes_rsvp_count,
-        checkedin: await this.checkinCollection.count({eventId: parseInt(event.id), checkin: true})
+        checkedin: await this.checkinCollection.count({
+          eventId: parseInt(event.id),
+          checkin: true
+        })
       })))
+  }
+
+  async _getEvent (meetupUser, meetupKey, eventId) {
+    const eventList = await this._getMeetupEvents(meetupUser, meetupKey)
+
+    if (eventList.errors) throw JSON.stringify(eventList)
+
+    const event = eventList.find(event => parseInt(event.id) === eventId)
+
+    return event && {
+      id: parseInt(event.id),
+      name: event.name,
+      date: event.local_date,
+      time: event.local_time,
+      attendee: event.yes_rsvp_count,
+      checkedin: await this.checkinCollection.count({
+        eventId: parseInt(event.id),
+        checkin: true
+      })
+    }
   }
 
   async listEvents (req, res) {
@@ -35,6 +58,27 @@ class Events {
       res.json(eventList)
     } catch (error) {
       res.status(400).send(error)
+    }
+  };
+
+  async getEvent (req, res) {
+    res.setHeader('Content-Type', 'application/json')
+    try {
+      const eventId = parseInt(req.params.id)
+      const event = await this._getEvent(meetupUser, meetupKey, eventId)
+
+      if (!event) {
+        throw JSON.stringify({ errors: [
+          {
+            code: 'event_error',
+            message: 'event not found'
+          }
+        ]})
+      }
+
+      res.json(event)
+    } catch (error) {
+      res.status(404).send(error)
     }
   };
 }
