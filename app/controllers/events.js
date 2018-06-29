@@ -23,7 +23,7 @@ class Events {
         date: event.local_date,
         time: event.local_time,
         attendee: event.yes_rsvp_count,
-        checkedin: await this.checkinCollection.count({eventId: parseInt(event.id)})
+        checkedin: await this.checkinCollection.count({eventId: parseInt(event.id), checkin: true})
       })))
   }
 
