@@ -13,9 +13,9 @@ module.exports = function (app, db) {
   app.get('/checkedin/:id', attendee.listCheckedin.bind(attendee))
 
   app.post('/checkin', checkSchema({
-    eventId: {isInt: true},
-    userId: {isInt: true},
-    checkin: {isBoolean: true}
+    eventId: {isInt: true, toInt: true},
+    userId: {isInt: true, toInt: true},
+    checkin: {isBoolean: true, toBoolean: true}
   }), checkin.updateCheckin.bind(checkin))
 
   app.get('/events', events.listEvents.bind(events))
