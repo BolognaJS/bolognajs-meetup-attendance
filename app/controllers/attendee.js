@@ -7,7 +7,7 @@ class Attendee {
   }
 
   _getMeetupAttendee (meetupId, meetupUser, meetupKey) {
-    return fetch(`https://api.meetup.com/${meetupUser}/events/${meetupId}/attendance/?key=${meetupKey}&sign=true`)
+    return fetch(`https://api.meetup.com/${meetupUser}/events/${meetupId}/rsvps/?key=${meetupKey}&sign=true`)
       .then(res => res.json())
   }
 
@@ -19,7 +19,7 @@ class Attendee {
     const checkinList = await this.checkinCollection.find({ eventId: meetupId }).toArray()
 
     return attendeeList
-      .filter(user => user.rsvp.response === 'yes')
+      .filter(user => user.response === 'yes')
       .map(user => {
         const checkinUser = checkinList.find(checkin => checkin.userId === user.member.id)
         return {
