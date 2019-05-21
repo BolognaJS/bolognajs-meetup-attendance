@@ -1,11 +1,11 @@
 {
   "name": "bolognajs-meetup-attendance",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "bolognajs-meetup-attendance",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
@@ -21,18 +21,18 @@
   },
   "homepage": "https://github.com/innocentiv/bolognajs-meetup-attendance#readme",
   "dependencies": {
-    "cors": "^2.8.4",
-    "express": "^4.16.3",
-    "express-validator": "^5.2.0",
-    "mongodb": "^3.0.10",
-    "node-fetch": "^2.1.2"
+    "cors": "^2.8.5",
+    "express": "^4.17.0",
+    "express-validator": "^5.3.1",
+    "mongodb": "^3.2.5",
+    "node-fetch": "^2.6.0"
   },
   "devDependencies": {
-    "eslint": "^5.0.1",
-    "eslint-config-standard": "^11.0.0",
-    "eslint-plugin-import": "^2.13.0",
-    "eslint-plugin-node": "^6.0.1",
-    "eslint-plugin-promise": "^3.8.0",
-    "eslint-plugin-standard": "^3.1.0"
+    "eslint": "^5.16.0",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-import": "^2.17.2",
+    "eslint-plugin-node": "^9.0.1",
+    "eslint-plugin-promise": "^4.1.1",
+    "eslint-plugin-standard": "^4.0.0"
   }
 }

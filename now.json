@@ -1,7 +1,12 @@
 {
-    "env": {
-        "MEETUP_API_KEY": "@meetup-api-key",
-        "MONGO_USER": "@mongo-user",
-        "MONGO_PASSWORD": "@mongo-password"
-    }
+  "version": 2,
+  "name": "bolognajs-meetup-attendance",
+  "alias": "bolognajs-meetup",
+  "builds": [{ "src": "index.js", "use": "@now/node-server" }],
+  "routes": [{ "src": "/(.*)", "dest": "/index.js" }],
+  "env": {
+    "MEETUP_API_KEY": "@meetup-api-key",
+    "MONGO_USER": "@mongo-user",
+    "MONGO_PASSWORD": "@mongo-password"
+  }
 }
